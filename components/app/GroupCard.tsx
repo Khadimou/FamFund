@@ -6,6 +6,7 @@ export interface GroupDashboardData {
   name: string
   goal_amount: number
   pledged_amount: number
+  funded_amount: number
   completion_pct: number
   member_count: number
   joined_count: number
