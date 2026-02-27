@@ -50,7 +50,7 @@ export default async function Testimonials() {
                 className="text-6xl font-bold leading-none mb-1 text-accent"
                 style={{ textShadow: '0 0 40px rgba(244,162,97,0.4)' }}
               >
-                {count > 0 ? count : '—'}
+                {count}
               </p>
               <p className="text-white/60 text-sm">
                 entrepreneurs ont déjà rejoint la liste d&apos;attente
