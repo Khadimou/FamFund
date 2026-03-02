@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: Request) {
+  const supabase = getSupabase()
+  if (!supabase) {
+    return NextResponse.json({ error: 'Service non configuré.' }, { status: 503 })
+  }
+
   try {
     const { email, source } = await request.json()
 

@@ -1,9 +1,11 @@
 import AnimatedSection from './AnimatedSection'
 import { Users, TrendingUp, MapPin } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { getSupabase } from '@/lib/supabase'
 
 async function getWaitlistCount(): Promise<number> {
   try {
+    const supabase = getSupabase()
+    if (!supabase) return 0
     const { count } = await supabase
       .from('waitlist')
       .select('*', { count: 'exact', head: true })
