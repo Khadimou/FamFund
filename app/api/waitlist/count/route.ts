@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const res = await fetch(
-    `${process.env.FASTAPI_URL ?? 'http://localhost:8000'}/waitlist/count`,
-    { cache: 'no-store' },
-  )
-  const data = await res.json()
-  return NextResponse.json(data)
+  const { count } = await supabase
+    .from('waitlist')
+    .select('*', { count: 'exact', head: true })
+
+  return NextResponse.json({ count: count ?? 0 })
 }

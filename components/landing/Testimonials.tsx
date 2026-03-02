@@ -1,15 +1,13 @@
 import AnimatedSection from './AnimatedSection'
 import { Users, TrendingUp, MapPin } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 async function getWaitlistCount(): Promise<number> {
   try {
-    const res = await fetch(
-      `${process.env.FASTAPI_URL ?? 'http://localhost:8000'}/waitlist/count`,
-      { cache: 'no-store' },
-    )
-    if (!res.ok) return 0
-    const data = await res.json()
-    return data.count ?? 0
+    const { count } = await supabase
+      .from('waitlist')
+      .select('*', { count: 'exact', head: true })
+    return count ?? 0
   } catch {
     return 0
   }
@@ -25,7 +23,6 @@ export default async function Testimonials() {
 
   return (
     <section className="relative py-20 bg-[#132019] overflow-hidden">
-      {/* Subtle amber center glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(244,162,97,0.06) 0%, transparent 100%)' }}
@@ -40,7 +37,6 @@ export default async function Testimonials() {
             Rejoignez les premiers à tester FamilyFund
           </h2>
 
-          {/* Counter card */}
           <div className="inline-flex items-center gap-6 bg-[#0C1A10] border border-[#27412E] rounded-3xl px-10 py-7 shadow-2xl mb-10">
             <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center shrink-0">
               <Users size={28} className="text-accent" />
@@ -58,7 +54,6 @@ export default async function Testimonials() {
             </div>
           </div>
 
-          {/* Stat pills */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             {stats.map(({ Icon, value, label }) => (
               <div
