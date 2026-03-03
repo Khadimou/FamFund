@@ -30,18 +30,18 @@ export default function Hero() {
           <AnimatedSection>
             <div className="space-y-7">
               <span className="inline-block bg-accent/15 text-accent border border-accent/30 rounded-full px-4 py-1.5 text-sm font-medium">
-                Bêta privée · Rejoignez la liste d&apos;attente
+                Accès anticipé · Rejoignez la liste d&apos;attente
               </span>
 
               <h1 className="font-serif text-5xl md:text-6xl text-white leading-[1.1]">
-                Levez vos premiers fonds auprès de votre famille.{' '}
-                <em className="text-primary-light">Sans les conflits.</em>
+                Financez votre projet grâce à votre famille.{' '}
+                <em className="text-primary-light">Sans les conversations gênantes.</em>
               </h1>
 
               <p className="text-lg text-white/70 leading-relaxed max-w-lg">
-                FamilyFund structure votre love money : chaque proche renseigne ce qu&apos;il peut
-                investir — sans conversations gênantes — vous pilotez tout depuis un tableau
-                de bord privé.
+                FamilyFund organise l&apos;argent que vos proches veulent vous donner ou prêter —
+                chacun renseigne ce qu&apos;il peut en toute confidentialité, vous voyez tout
+                depuis un espace privé.
               </p>
 
               <div id="hero-form">

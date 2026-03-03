@@ -4,17 +4,17 @@ import AnimatedSection from './AnimatedSection'
 const problems = [
   {
     Icon: MessageCircle,
-    title: 'Vous ne savez pas qui peut vraiment aider, ni combien',
+    title: 'Vous ne savez pas qui peut vous aider, ni combien, sans les mettre mal à l\'aise',
     sub: 'Impossible de planifier sans avoir les chiffres.',
   },
   {
     Icon: Clock,
-    title: 'Les conversations sont maladroites et répétées',
+    title: 'Chaque discussion crée une tension — même avec les meilleures intentions',
     sub: 'Chaque discussion crée une tension latente.',
   },
   {
     Icon: FileText,
-    title: "Rien n'est formalisé, les attentes divergent",
+    title: 'Sans document clair, les souvenirs divergent et les relations se fragilisent',
     sub: 'Sans cadre, les malentendus surviennent inévitablement.',
   },
 ]
@@ -25,8 +25,8 @@ export default function Problems() {
       <div className="container mx-auto px-4 max-w-5xl">
         <AnimatedSection className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl text-white leading-snug">
-            Emprunter à sa famille, c&apos;est souvent{' '}
-            <em className="text-accent not-italic">le début des malentendus</em>
+            Demander de l&apos;argent à sa famille, c&apos;est souvent{' '}
+            <em className="text-accent not-italic">la conversation la plus difficile à avoir</em>
           </h2>
         </AnimatedSection>
 

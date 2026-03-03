@@ -29,16 +29,16 @@ export default function CTAFinal() {
           {/* Spots badge */}
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-white/60 text-sm">Accès prioritaire ·</span>
+            <span className="text-white/60 text-sm">Accès anticipé ·</span>
             <span className="text-accent font-bold text-sm">{spots} places restantes</span>
           </div>
 
           <h2 className="font-serif text-4xl md:text-5xl text-white mb-5 leading-tight">
-            Soyez parmi les premiers à structurer votre love money
+            Soyez parmi les premiers à organiser le soutien financier de votre famille — proprement.
           </h2>
 
           <p className="text-white/70 text-lg mb-10 leading-relaxed max-w-xl mx-auto">
-            Les 500 premiers inscrits bénéficient d&apos;un accès prioritaire et d&apos;un
+            Les 487 premiers inscrits reçoivent un accès anticipé et un
             accompagnement personnalisé au lancement.
           </p>
 

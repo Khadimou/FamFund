@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         sender:  { name: 'FamilyFund', email: 'contact@familyfund.fr' },
-        to:      [{ email: 'contact@familyfund.fr', name: 'FamilyFund' }],
+        to:      [{ email: process.env.CONTACT_EMAIL ?? 'contact@familyfund.fr', name: 'FamilyFund' }],
         replyTo: { email, name },
         subject: `Message de ${name} via familyfund.fr`,
         textContent: `Nom : ${name}\nEmail : ${email}\n\nMessage :\n${message}`,

@@ -4,19 +4,19 @@ import { Lock } from 'lucide-react'
 const steps = [
   {
     number: '01',
-    title: 'Vous créez votre groupe familial privé en 2 minutes',
+    title: 'Vous créez un espace privé pour votre famille en 2 minutes',
     description:
       "Une invitation par lien sécurisé. Chaque membre rejoint sans friction, sans télécharger d'application.",
   },
   {
     number: '02',
-    title: "Chaque membre renseigne sa situation et sa capacité d'engagement",
+    title: 'Chaque proche indique ce qu\'il peut donner ou prêter — sans que les autres le voient',
     description:
       'De manière totalement confidentielle. Aucun membre ne voit les données des autres.',
   },
   {
     number: '03',
-    title: 'Vous pilotez votre levée depuis un tableau de bord clair',
+    title: 'Vous voyez en un coup d\'œil qui peut vous aider et combien',
     description:
       'Vue consolidée de tous les engagements, statuts et montants disponibles — accessible uniquement par vous.',
   },
@@ -29,7 +29,7 @@ export default function Solution() {
 
         <AnimatedSection className="text-center mb-14">
           <h2 className="font-serif text-3xl md:text-4xl text-white mb-3">
-            FamilyFund organise tout à votre place
+            Comment ça marche — en 3 étapes simples
           </h2>
           <p className="text-white/60 text-lg">Un processus simple, en trois étapes.</p>
         </AnimatedSection>
