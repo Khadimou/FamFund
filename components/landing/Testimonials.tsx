@@ -1,6 +1,7 @@
 import AnimatedSection from './AnimatedSection'
 import { Users, TrendingUp, MapPin } from 'lucide-react'
 import { getSupabase } from '@/lib/supabase'
+import WaitlistCounter from './WaitlistCounter'
 
 async function getWaitlistCount(): Promise<number> {
   try {
@@ -48,7 +49,7 @@ export default async function Testimonials() {
                 className="text-6xl font-bold leading-none mb-1 text-accent"
                 style={{ textShadow: '0 0 40px rgba(244,162,97,0.4)' }}
               >
-                {count}
+                <WaitlistCounter initial={count} />
               </p>
               <p className="text-white/60 text-sm">
                 entrepreneurs ont déjà rejoint la liste d&apos;attente
