@@ -1,5 +1,5 @@
 import AnimatedSection from './AnimatedSection'
-import { Users, TrendingUp, MapPin } from 'lucide-react'
+import { Users } from 'lucide-react'
 import { getSupabase } from '@/lib/supabase'
 import WaitlistCounter from './WaitlistCounter'
 
@@ -15,11 +15,6 @@ async function getWaitlistCount(): Promise<number> {
     return 0
   }
 }
-
-const stats = [
-  { Icon: TrendingUp, value: '33 500€', label: 'montant moyen levé' },
-  { Icon: MapPin,     value: '12+',     label: 'villes en France' },
-]
 
 export default async function Testimonials() {
   const count = await getWaitlistCount()
@@ -40,7 +35,7 @@ export default async function Testimonials() {
             Rejoignez les premiers à tester FamilyFund
           </h2>
 
-          <div className="inline-flex items-center gap-6 bg-[#0C1A10] border border-[#27412E] rounded-3xl px-10 py-7 shadow-2xl mb-10">
+          <div className="inline-flex items-center gap-6 bg-[#0C1A10] border border-[#27412E] rounded-3xl px-10 py-7 shadow-2xl mb-8">
             <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center shrink-0">
               <Users size={28} className="text-accent" />
             </div>
@@ -55,19 +50,6 @@ export default async function Testimonials() {
                 entrepreneurs ont déjà rejoint la liste d&apos;attente
               </p>
             </div>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {stats.map(({ Icon, value, label }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2.5 bg-[#0C1A10] border border-[#27412E] rounded-full px-5 py-2.5"
-              >
-                <Icon size={15} className="text-primary-light shrink-0" />
-                <span className="text-white font-semibold text-sm">{value}</span>
-                <span className="text-white/60 text-sm">{label}</span>
-              </div>
-            ))}
           </div>
 
           <p className="text-white/60 text-base max-w-md mx-auto leading-relaxed">
