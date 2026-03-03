@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = process.env.BREVO_API_KEY
   if (!apiKey) {
     return NextResponse.json({ error: 'Service non configuré.' }, { status: 503 })
   }
@@ -16,28 +15,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Tous les champs sont requis.' }, { status: 400 })
     }
 
-    const resend = new Resend(apiKey)
-
-    await resend.emails.send({
-      from: 'FamilyFund <onboarding@resend.dev>',
-      to:   'contact@familyfund.fr',
-      replyTo: email,
-      subject: `Message de ${name} via familyfund.fr`,
-      text: `Nom : ${name}\nEmail : ${email}\n\nMessage :\n${message}`,
-      html: `
-        <p><strong>Nom :</strong> ${name}</p>
-        <p><strong>Email :</strong> <a href="mailto:${email}">${email}</a></p>
-        <br/>
-        <p><strong>Message :</strong></p>
-        <p style="white-space:pre-line">${message}</p>
-      `,
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sender:  { name: 'FamilyFund', email: 'contact@familyfund.fr' },
+        to:      [{ email: 'contact@familyfund.fr', name: 'FamilyFund' }],
+        replyTo: { email, name },
+        subject: `Message de ${name} via familyfund.fr`,
+        textContent: `Nom : ${name}\nEmail : ${email}\n\nMessage :\n${message}`,
+        htmlContent: `
+          <p><strong>Nom :</strong> ${name}</p>
+          <p><strong>Email :</strong> <a href="mailto:${email}">${email}</a></p>
+          <br/>
+          <p><strong>Message :</strong></p>
+          <p style="white-space:pre-line">${message}</p>
+        `,
+      }),
     })
+
+    if (!res.ok) {
+      const err = await res.json()
+      console.error('Brevo error:', err)
+      return NextResponse.json({ error: 'Envoi impossible. Réessayez.' }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json(
-      { error: 'Envoi impossible. Réessayez dans quelques instants.' },
-      { status: 500 },
+      { error: 'Service temporairement indisponible. Réessayez dans quelques instants.' },
+      { status: 503 },
     )
   }
 }
