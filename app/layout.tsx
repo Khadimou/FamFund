@@ -20,7 +20,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://fam-fund.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://familyfund.fr'),
   title: 'FamilyFund — Levez vos premiers fonds auprès de votre famille. Sans les conflits.',
   description:
     "FamilyFund structure votre love money : chaque proche renseigne ce qu'il peut investir, vous pilotez tout depuis un tableau de bord clair et privé.",
