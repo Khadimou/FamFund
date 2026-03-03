@@ -39,8 +39,8 @@ export async function POST(request: Request) {
 
     if (!res.ok) {
       const err = await res.json()
-      console.error('Brevo error:', err)
-      return NextResponse.json({ error: 'Envoi impossible. Réessayez.' }, { status: 500 })
+      console.error('Brevo error:', JSON.stringify(err))
+      return NextResponse.json({ error: err.message ?? 'Envoi impossible. Réessayez.' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
