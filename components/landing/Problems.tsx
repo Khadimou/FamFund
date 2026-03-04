@@ -25,7 +25,7 @@ export default function Problems() {
       <div className="container mx-auto px-4 max-w-5xl">
         <AnimatedSection className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl text-white leading-snug">
-            Demander de l&apos;argent à sa famille, c&apos;est souvent{' '}
+            Demander de l&apos;argent à ses proches, c&apos;est souvent{' '}
             <em className="text-accent not-italic">la conversation la plus difficile à avoir</em>
           </h2>
         </AnimatedSection>

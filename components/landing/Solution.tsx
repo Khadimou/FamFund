@@ -4,7 +4,7 @@ import { Lock } from 'lucide-react'
 const steps = [
   {
     number: '01',
-    title: 'Vous créez un espace privé pour votre famille en 2 minutes',
+    title: 'Vous créez un espace privé pour vos proches en 2 minutes',
     description:
       "Une invitation par lien sécurisé. Chaque membre rejoint sans friction, sans télécharger d'application.",
   },

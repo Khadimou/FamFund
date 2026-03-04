@@ -34,7 +34,7 @@ export default function Hero() {
               </span>
 
               <h1 className="font-serif text-5xl md:text-6xl text-white leading-[1.1]">
-                Financez votre projet grâce à votre famille.{' '}
+                Financez votre projet grâce à vos proches.{' '}
                 <em className="text-primary-light">Sans les conversations gênantes.</em>
               </h1>
 
