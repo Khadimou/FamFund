@@ -4,6 +4,7 @@ import Solution from '@/components/landing/Solution'
 import Testimonials from '@/components/landing/Testimonials'
 import FAQ from '@/components/landing/FAQ'
 import CTAFinal from '@/components/landing/CTAFinal'
+import GoFurther from '@/components/landing/GoFurther'
 import Contact from '@/components/landing/Contact'
 import Footer from '@/components/landing/Footer'
 import StickyCTA from '@/components/landing/StickyCTA'
@@ -17,6 +18,7 @@ export default function Home() {
       <Testimonials />
       <FAQ />
       <CTAFinal />
+      <GoFurther />
       <Contact />
       <Footer />
       <StickyCTA />
