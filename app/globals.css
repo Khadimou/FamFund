@@ -20,3 +20,31 @@
     font-style: italic;
   }
 }
+
+@layer components {
+  /* ── Contenu des articles de blog (Portable Text) ── */
+  .prose-blog {
+    @apply text-white/75 leading-relaxed space-y-5 text-base;
+  }
+  .prose-blog h2 {
+    @apply font-serif text-2xl text-white mt-10 mb-3;
+  }
+  .prose-blog h3 {
+    @apply font-serif text-xl text-white mt-8 mb-2;
+  }
+  .prose-blog p {
+    @apply leading-relaxed;
+  }
+  .prose-blog strong {
+    @apply text-white font-semibold;
+  }
+  .prose-blog em {
+    @apply text-white/90 italic;
+  }
+  .prose-blog ul {
+    @apply list-disc list-inside space-y-1.5 pl-2;
+  }
+  .prose-blog ol {
+    @apply list-decimal list-inside space-y-1.5 pl-2;
+  }
+}
