@@ -2,21 +2,31 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
-import { sanityFetch } from '@/sanity/lib/live'
-import { defineQuery } from 'next-sanity'
+import { client } from '@/sanity/lib/client'
 
-const POST_QUERY = defineQuery(`
+export const dynamic = 'force-dynamic'
+
+const POST_QUERY = `
   *[_type == "post" && slug.current == $slug][0] {
     title, slug, excerpt, publishedAt, body, seoDescription
   }
-`)
+`
+
+interface Post {
+  title: string
+  slug: { current: string }
+  excerpt?: string
+  publishedAt?: string
+  body?: unknown[]
+  seoDescription?: string
+}
 
 interface Props {
   params: { slug: string }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data: post } = await sanityFetch({ query: POST_QUERY, params })
+  const post = await client.fetch<Post | null>(POST_QUERY, { slug: params.slug })
   if (!post) return {}
   return {
     title: `${post.title} — FamilyFund`,
@@ -25,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { data: post } = await sanityFetch({ query: POST_QUERY, params })
+  const post = await client.fetch<Post | null>(POST_QUERY, { slug: params.slug })
 
   if (!post) notFound()
 

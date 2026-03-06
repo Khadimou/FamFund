@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { sanityFetch } from '@/sanity/lib/live'
-import { defineQuery } from 'next-sanity'
+import { client } from '@/sanity/lib/client'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Blog — Love money, prêt familial & financement entre proches | FamilyFund',
@@ -9,14 +10,20 @@ export const metadata: Metadata = {
     'Guides pratiques sur la love money, la fiscalité du prêt familial et les bonnes pratiques pour financer votre projet grâce à vos proches.',
 }
 
-const POSTS_QUERY = defineQuery(`
+const POSTS_QUERY = `
   *[_type == "post"] | order(publishedAt desc) {
     _id, title, slug, excerpt, publishedAt
   }
-`)
+`
 
 export default async function BlogPage() {
-  const { data: posts } = await sanityFetch({ query: POSTS_QUERY })
+  const posts = await client.fetch<{
+    _id: string
+    title: string
+    slug: { current: string }
+    excerpt?: string
+    publishedAt?: string
+  }[]>(POSTS_QUERY)
 
   return (
     <main className="min-h-screen bg-[#0C1A10]">
