@@ -31,7 +31,7 @@ export default function StickyCTA() {
         onClick={scrollToForm}
         className="w-full bg-accent text-primary-dark font-semibold py-3 rounded-xl text-sm"
       >
-        Rejoindre la liste d&apos;attente →
+        Obtenir mon accès anticipé →
       </button>
     </div>
   )

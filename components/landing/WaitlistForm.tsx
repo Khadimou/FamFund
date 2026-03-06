@@ -36,7 +36,7 @@ export default function WaitlistForm({ source, dark = false }: WaitlistFormProps
       setSubmitted(true)
       toast({
         title: 'Vous êtes sur la liste !',
-        description: `Vous êtes #${data.position} sur la liste d'attente. On vous prévient dès le lancement.`,
+        description: `Vous êtes #${data.position} à avoir rejoint. On vous prévient dès le lancement.`,
       })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue.')
@@ -98,7 +98,7 @@ export default function WaitlistForm({ source, dark = false }: WaitlistFormProps
               }`}
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? 'Inscription…' : "Rejoindre la liste d'attente"}
+              {loading ? 'Inscription…' : "Obtenir mon accès anticipé"}
             </button>
           </form>
 

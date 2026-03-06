@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: "C'est gratuit ?",
-    a: "L'accès liste d'attente est gratuit. Le modèle de prix sera annoncé au lancement.",
+    a: "L'accès anticipé est gratuit. Le modèle de prix sera annoncé au lancement.",
   },
   {
     q: 'Pour quel type de projet ?',

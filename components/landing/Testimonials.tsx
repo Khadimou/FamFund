@@ -47,7 +47,7 @@ export default async function Testimonials() {
                 <WaitlistCounter initial={count} />
               </p>
               <p className="text-white/60 text-sm">
-                entrepreneurs ont déjà rejoint la liste d&apos;attente
+                entrepreneurs ont déjà obtenu un accès anticipé
               </p>
             </div>
           </div>

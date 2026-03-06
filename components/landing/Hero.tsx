@@ -30,7 +30,7 @@ export default function Hero() {
           <AnimatedSection>
             <div className="space-y-7">
               <span className="inline-block bg-accent/15 text-accent border border-accent/30 rounded-full px-4 py-1.5 text-sm font-medium">
-                Accès anticipé · Rejoignez la liste d&apos;attente
+                Accès anticipé · Inscrivez-vous maintenant
               </span>
 
               <h1 className="font-serif text-5xl md:text-6xl text-white leading-[1.1]">
