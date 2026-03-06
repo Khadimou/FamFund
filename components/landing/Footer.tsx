@@ -13,6 +13,14 @@ export default function Footer() {
 
           {/* Nav */}
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/60">
+            <a href="/blog" className="hover:text-white transition-colors">
+              Blog
+            </a>
+            <span className="text-white/20" aria-hidden>·</span>
+            <a href="/guide" className="hover:text-white transition-colors">
+              Guide gratuit
+            </a>
+            <span className="text-white/20" aria-hidden>·</span>
             <a href="/mentions-legales" className="hover:text-white transition-colors">
               Mentions légales
             </a>
