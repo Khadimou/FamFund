@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: Request) {
   const apiKey = process.env.BREVO_API_KEY
   const pdfPath = process.env.GUIDE_PDF_PATH
+  const listId = process.env.BREVO_GUIDE_LIST_ID ? Number(process.env.BREVO_GUIDE_LIST_ID) : null
 
   if (!apiKey) {
     return NextResponse.json({ error: 'Service non configuré.' }, { status: 503 })
@@ -45,13 +46,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Guide temporairement indisponible.' }, { status: 503 })
     }
 
-    // ── Brevo : envoi du lien de téléchargement ────────────────────────────
-    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    // ── Brevo : email transactionnel J+0 (livraison du guide) ──────────────
+    const emailRes = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
-      headers: {
-        'api-key': apiKey,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         sender: { name: 'FamilyFund', email: 'contact@familyfund.fr' },
         to: [{ email }],
@@ -76,10 +74,27 @@ export async function POST(request: Request) {
       }),
     })
 
-    if (!res.ok) {
-      const err = await res.json()
-      console.error('Brevo error:', JSON.stringify(err))
+    if (!emailRes.ok) {
+      const err = await emailRes.json()
+      console.error('Brevo email error:', JSON.stringify(err))
       return NextResponse.json({ error: err.message ?? 'Envoi impossible. Réessayez.' }, { status: 500 })
+    }
+
+    // ── Brevo : ajout du contact dans la liste → déclenche l'automation ────
+    // Ne bloque pas la réponse si cette étape échoue
+    if (listId) {
+      fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          attributes: {
+            GUIDE_DOWNLOAD_DATE: new Date().toISOString().split('T')[0],
+          },
+          listIds: [listId],
+          updateEnabled: true,
+        }),
+      }).catch((err) => console.error('Brevo contact error:', err))
     }
 
     return NextResponse.json({ success: true })
