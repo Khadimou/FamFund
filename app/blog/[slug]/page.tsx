@@ -17,7 +17,7 @@ interface Post {
   slug: { current: string }
   excerpt?: string
   publishedAt?: string
-  body?: unknown[]
+  body?: any[]
   seoDescription?: string
 }
 
