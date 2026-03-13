@@ -46,12 +46,12 @@ const components: PortableTextComponents = {
           className={`${styles.wrapper} ${styles.border} border-l-4 rounded-r-lg px-5 py-4 my-6`}
         >
           <p className="text-gray-800 text-sm leading-relaxed">{value.content}</p>
-          {value.ctaLabel && value.ctaUrl && (
+          {value.ctaUrl && (
             <a
               href={value.ctaUrl}
               className="inline-block mt-3 text-sm font-semibold text-[#2D6A4F] hover:underline"
             >
-              {value.ctaLabel} →
+              {value.ctaLabel ?? value.ctaUrl} →
             </a>
           )}
         </div>
