@@ -1,14 +1,21 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { PortableText } from '@portabletext/react'
 import { client } from '@/sanity/lib/client'
+import { BlogBody } from '@/components/blog/BlogBody'
 
 export const dynamic = 'force-dynamic'
 
 const POST_QUERY = `
   *[_type == "post" && slug.current == $slug][0] {
-    title, slug, excerpt, publishedAt, body, seoDescription
+    title, slug, excerpt, publishedAt, seoDescription,
+    body[]{
+      ...,
+      _type == "internalLink" => {
+        ...,
+        post->{ title, "slug": slug.current }
+      }
+    }
   }
 `
 
@@ -81,7 +88,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Corps de l'article */}
         {post.body && (
           <div className="prose-blog">
-            <PortableText value={post.body} />
+            <BlogBody content={post.body} />
           </div>
         )}
 
