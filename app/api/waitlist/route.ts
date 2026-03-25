@@ -9,6 +9,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Service non configuré.' }, { status: 503 })
   }
 
+  const brevoApiKey = process.env.BREVO_API_KEY
+  const brevoListId = process.env.BREVO_WAITLIST_LIST_ID ? Number(process.env.BREVO_WAITLIST_LIST_ID) : null
+
   try {
     const { email, source } = await request.json()
 
@@ -47,6 +50,23 @@ export async function POST(request: Request) {
       .from('waitlist')
       .select('*', { count: 'exact', head: true })
       .lte('id', data.id)
+
+    // Brevo : ajout du contact dans la liste → déclenche l'automation
+    if (brevoApiKey && brevoListId) {
+      fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          attributes: {
+            WAITLIST_SIGNUP_DATE: new Date().toISOString().split('T')[0],
+            SOURCE: source ?? 'unknown',
+          },
+          listIds: [brevoListId],
+          updateEnabled: true,
+        }),
+      }).catch((err) => console.error('Brevo contact error:', err))
+    }
 
     return NextResponse.json({ success: true, position: count ?? 1 }, { status: 201 })
   } catch {

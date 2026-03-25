@@ -1,0 +1,236 @@
+author: ""
+brandUpdateTime: ""
+campaignType: automation_template
+fields: {}
+fieldsHistory: []
+firstLoadSocialIcons: false
+fonts: []
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567804
+name: ""
+subject: 'Votre accès anticipé vous attend (dernier rappel)'
+ui:
+  showDeleteOption: false
+user-hash: b38b1ee77b0b9acef32366df0239c01e
+version: 3.0.1
+body:
+  id: f1e2d3c4-b5a6-7890-abcd-ef1234567804
+  type: body
+  layout:
+    320px:
+      width: 100%
+    default:
+      align: left
+      direction: ltr
+      wrapper-width: 100%
+  content:
+    -
+      content-type: wrapper
+      id: 1438a79c-db04-4b95-a35a-2ebb8b5b0404
+      stylable: false
+      title: Wrapper
+      type: rows
+      layout:
+        320px:
+          width: 100%
+        default:
+          align: left
+          valign: top
+      content:
+        -
+          align: top
+          dist: '12'
+          gutter: 0px
+          id: 574c0324-9773-4bdb-a548-d53fd9fd0404
+          moduleName: viewInBrowser
+          stylable: false
+          thumbnail: /assets/img/editor/grid_12.svg
+          title: section
+          type: grid-row
+          layout:
+            320px:
+              display: rows
+              width: 100%
+            default:
+              align: center
+              background-color: transparent
+              display: none
+              full-width: true
+              padding-bottom: 5px
+              padding-top: 5px
+              valign: top
+              width: 100%
+          content:
+            -
+              id: 6ba16d32-7ad0-4e3d-9075-852442930404
+              isEmpty: false
+              label: 'Drop content here'
+              stylable: false
+              title: 'column 1'
+              type: grid-column
+              layout:
+                320px: []
+                default:
+                  padding-left: 0px
+                  padding-right: 0px
+                  valign: top
+              content:
+                -
+                  id: 14710400-49d9-4928-a9f7-996ea7d60404
+                  stylable: false
+                  title: Webversion
+                  type: text
+                  layout:
+                    320px:
+                      padding-left: 10px
+                      padding-right: 10px
+                      width: 100%
+                    default:
+                      align: center
+                      line-height: 16px
+                      padding-left: 30px
+                      padding-right: 30px
+                      text-align: center
+                      width: 100%
+                  content: "<p><a href=\"{{ mirror }}\"><span style=\"font-family: arial,helvetica,sans-serif;color:#858588;font-size: 12px; text-decoration: underline;\">Afficher dans le navigateur</span></a></p>"
+        -
+          align: top
+          dist: '12'
+          gutter: 0px
+          id: a2962a7d-4505-4c84-a352-569e35760404
+          moduleName: header
+          stylable: false
+          thumbnail: /assets/img/editor/element-header.svg
+          title: Content
+          type: grid-row
+          layout:
+            320px:
+              display: rows
+              padding-left: 0px
+              padding-right: 0px
+              width: 100%
+            default:
+              align: center
+              padding-left: 0px
+              padding-right: 0px
+              padding-top: 20px
+              valign: top
+              width: 100%
+          content:
+            -
+              id: 53025d68-d33a-414e-83f4-03c24c600404
+              isEmpty: false
+              label: 'Drop content here'
+              stylable: false
+              title: grid-column
+              type: grid-column
+              layout:
+                320px: []
+                default:
+                  padding-left: 0px
+                  padding-right: 0px
+                  valign: top
+              content:
+                -
+                  id: d19b7bc6-341c-41c0-b8ed-ff08615e0404
+                  stylable: false
+                  title: row
+                  type: rows
+                  layout:
+                    320px:
+                      width: 100%
+                    default:
+                      align: left
+                      valign: top
+                      width: 100%
+                  content:
+                    -
+                      id: a95b0595-c211-4a40-b53c-c845ba030404
+                      stylable: false
+                      thumbnail: /assets/img/editor/element_text.svg
+                      title: Text
+                      type: text
+                      layout:
+                        320px:
+                          width: 100%
+                        default:
+                          align: left
+                          text-align: left
+                          text-valign: top
+                          valign: top
+                          width: 100%
+                      content: |
+                        <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a2e1e;line-height:1.6">
+                          <p style="color:#666;font-size:13px;margin-bottom:24px">FamilyFund</p>
+                          <h2 style="color:#2d6a4f;font-size:22px;margin-bottom:16px">Vous avez le guide. Il manque juste la plateforme.</h2>
+                          <p>Bonjour,</p>
+                          <p>Cette semaine, vous avez vu pourquoi formaliser un prêt familial est indispensable, comment vos proches se sentent face à ce type de demande, et comment FamilyFund simplifie tout le processus.</p>
+                          <p>Si vous préparez une levée de fonds auprès de vos proches — ou si vous y pensez — c&#39;est le bon moment pour réserver votre accès anticipé.</p>
+                          <p style="text-align:center;margin:36px 0">
+                            <a href="https://familyfund.fr" style="background:#2d6a4f;color:#fff;padding:16px 32px;border-radius:10px;text-decoration:none;font-weight:600;display:inline-block;font-size:16px">
+                              Obtenir mon accès anticipé →
+                            </a>
+                          </p>
+                          <p style="color:#666;font-size:14px">C&#39;est gratuit, sans carte bancaire, et vous serez informé en priorité au lancement.</p>
+                          <p>On espère vous compter parmi nos premiers utilisateurs.<br>— <strong>L&#39;équipe FamilyFund</strong></p>
+                          <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0"/>
+                          <p style="color:#999;font-size:12px">
+                            FamilyFund · <a href="https://familyfund.fr" style="color:#2d6a4f">familyfund.fr</a> ·
+                            <a href="{{ unsubscribe }}" style="color:#999">Se désabonner</a>
+                          </p>
+                        </div>
+media:
+  320px:
+    max-width: 600
+    min-width: 0
+styles:
+  default:
+    properties:
+      color: '#3b3f44'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 16px
+      line-height: '1.5'
+    title: Paragraph
+  default-button:
+    properties:
+      background-color: '#0092FF'
+      border-radius: 4px
+      border-width: 0px
+      color: '#ffffff'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 16px
+      remove-vml-button: optional
+      width: 50%
+    title: Button
+  default-heading1:
+    properties:
+      color: '#1F2D3D'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 36px
+      font-weight: '400'
+    title: 'Heading 1'
+  default-heading2:
+    properties:
+      color: '#1F2D3D'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 32px
+      font-weight: '400'
+    title: 'Heading 2'
+  default-heading3:
+    properties:
+      color: '#1F2D3D'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 24px
+      font-weight: '400'
+    title: 'Heading 3'
+  default-heading4:
+    properties:
+      color: '#1F2D3D'
+      font-family: 'arial,helvetica,sans-serif'
+      font-size: 18px
+      font-weight: '400'
+    title: 'Heading 4'
+  default-link:
+    properties:
+      color: '#696969'
+      text-decoration: underline
+    title: Link
