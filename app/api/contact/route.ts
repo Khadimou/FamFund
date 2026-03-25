@@ -4,6 +4,8 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: Request) {
   const apiKey = process.env.BREVO_API_KEY
+  const listId = process.env.BREVO_CONTACT_LIST_ID ? Number(process.env.BREVO_CONTACT_LIST_ID) : null
+
   if (!apiKey) {
     return NextResponse.json({ error: 'Service non configuré.' }, { status: 503 })
   }
@@ -41,6 +43,23 @@ export async function POST(request: Request) {
       const err = await res.json()
       console.error('Brevo error:', JSON.stringify(err))
       return NextResponse.json({ error: err.message ?? 'Envoi impossible. Réessayez.' }, { status: 500 })
+    }
+
+    // Brevo : ajout du contact dans la liste → déclenche l'automation
+    if (listId) {
+      fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          attributes: {
+            FIRSTNAME: name,
+            CONTACT_DATE: new Date().toISOString().split('T')[0],
+          },
+          listIds: [listId],
+          updateEnabled: true,
+        }),
+      }).catch((err) => console.error('Brevo contact error:', err))
     }
 
     return NextResponse.json({ success: true })
