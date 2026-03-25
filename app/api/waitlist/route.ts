@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     // Brevo : ajout du contact dans la liste → déclenche l'automation
     if (brevoApiKey && brevoListId) {
-      fetch('https://api.brevo.com/v3/contacts', {
+      const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
         method: 'POST',
         headers: { 'api-key': brevoApiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -65,7 +65,11 @@ export async function POST(request: Request) {
           listIds: [brevoListId],
           updateEnabled: true,
         }),
-      }).catch((err) => console.error('Brevo contact error:', err))
+      })
+      const brevoBody = await brevoRes.json().catch(() => null)
+      console.log('Brevo status:', brevoRes.status, JSON.stringify(brevoBody))
+    } else {
+      console.log('Brevo skipped — apiKey:', !!brevoApiKey, 'listId:', brevoListId)
     }
 
     return NextResponse.json({ success: true, position: count ?? 1 }, { status: 201 })
