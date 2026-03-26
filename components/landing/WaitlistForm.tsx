@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/toast-context'
+import { isBlockedDomain } from '@/lib/blocked-domains'
 
 interface WaitlistFormProps {
   source: string
@@ -22,6 +23,12 @@ export default function WaitlistForm({ source, dark = false }: WaitlistFormProps
     e.preventDefault()
     setLoading(true)
     setError('')
+
+    if (isBlockedDomain(email)) {
+      setError("Cette adresse email n'est pas acceptée.")
+      setLoading(false)
+      return
+    }
 
     try {
       const res = await fetch('/api/waitlist', {

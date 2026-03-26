@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSupabase } from '@/lib/supabase'
+import { isBlockedDomain } from '@/lib/blocked-domains'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,6 +18,10 @@ export async function POST(request: Request) {
 
     if (!email) {
       return NextResponse.json({ error: 'Email requis.' }, { status: 400 })
+    }
+
+    if (isBlockedDomain(email)) {
+      return NextResponse.json({ error: "Cette adresse email n'est pas acceptée." }, { status: 400 })
     }
 
     // Vérifie si l'email est déjà inscrit
