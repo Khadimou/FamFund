@@ -11,7 +11,7 @@ interface ProjectPayload {
   description: string
   goalAmount: number
   minimumAmount: number
-  durationMonths: number
+  durationMonths: number | null
   interestRate: number
 }
 

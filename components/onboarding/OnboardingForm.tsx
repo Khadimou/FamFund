@@ -37,7 +37,7 @@ const INITIAL: Fields = {
   description: '',
   goalAmount: '',
   minimumAmount: '',
-  durationMonths: '24',
+  durationMonths: '',
   interestRate: '0',
 }
 
@@ -72,7 +72,7 @@ export default function OnboardingForm() {
       description: fields.description,
       goalAmount: parseFloat(fields.goalAmount),
       minimumAmount: parseFloat(fields.minimumAmount),
-      durationMonths: parseInt(fields.durationMonths),
+      durationMonths: fields.durationMonths ? parseInt(fields.durationMonths) : null,
       interestRate: parseFloat(fields.interestRate) || 0,
     })
 
@@ -212,13 +212,13 @@ export default function OnboardingForm() {
               </Field>
             </div>
 
-            <Field label="Durée de remboursement" required>
+            <Field label="Durée de remboursement">
               <select
                 value={fields.durationMonths}
                 onChange={set('durationMonths')}
-                required
                 className={inputCls}
               >
+                <option value="">Non applicable</option>
                 {DURATIONS.map((d) => (
                   <option key={d} value={d}>
                     {d} mois
