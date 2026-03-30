@@ -1,40 +1,34 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import { updateSession } from '@/lib/supabase/middleware'
 
-const PROTECTED_PREFIXES = ['/dashboard', '/group', '/settings']
-const AUTH_ROUTES = ['/login', '/register']
+const PROTECTED_PREFIXES = [
+  '/dashboard',
+  '/famille',
+  '/projet',
+  '/documents',
+  '/remboursements',
+  '/lettre-synthese',
+  '/onboarding',
+]
 
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth_token')?.value
+export async function middleware(request: NextRequest) {
+  const { response, user } = await updateSession(request)
+
   const { pathname } = request.nextUrl
+  const isProtected = PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + '/'))
 
-  const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))
-  const isAuthRoute = AUTH_ROUTES.includes(pathname)
-
-  // Pas de session → redirige vers login
-  if (isProtected && !token) {
+  if (isProtected && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    url.searchParams.set('from', pathname)
+    url.pathname = '/'
     return NextResponse.redirect(url)
   }
 
-  // Déjà connecté → redirige vers dashboard
-  if (isAuthRoute && token) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
-  }
-
-  return NextResponse.next()
+  return response
 }
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/group/:path*',
-    '/settings/:path*',
-    '/login',
-    '/register',
+    '/((?!_next/static|_next/image|favicon.ico|auth/).*)',
   ],
 }

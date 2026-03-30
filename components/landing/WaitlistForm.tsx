@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
-import { useToast } from '@/components/ui/toast-context'
-import { isBlockedDomain } from '@/lib/blocked-domains'
+import { sendMagicLink } from '@/app/actions/auth'
 
 interface WaitlistFormProps {
   source: string
@@ -12,50 +11,34 @@ interface WaitlistFormProps {
   dark?: boolean
 }
 
-export default function WaitlistForm({ source, dark = false }: WaitlistFormProps) {
+export default function WaitlistForm({ source: _source, dark = false }: WaitlistFormProps) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
-  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    if (isBlockedDomain(email)) {
-      setError("Cette adresse email n'est pas acceptée.")
+    const redirectTo = `${window.location.origin}/auth/callback`
+    const result = await sendMagicLink(email, redirectTo)
+
+    if (result.error) {
+      setError(result.error)
       setLoading(false)
       return
     }
 
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Une erreur est survenue. Réessayez.')
-
-      setSubmitted(true)
-      toast({
-        title: 'Vous êtes sur la liste !',
-        description: `Vous êtes #${data.position} à avoir rejoint. On vous prévient dès le lancement.`,
-      })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue.')
-    } finally {
-      setLoading(false)
-    }
+    setSubmitted(true)
+    setLoading(false)
   }
 
   return (
     <AnimatePresence mode="wait">
       {submitted ? (
-        /* ── Confirmation post-inscription ── */
+        /* ── Confirmation post-envoi ── */
         <motion.div
           key="success"
           initial={{ opacity: 0, y: 10, scale: 0.97 }}
@@ -65,12 +48,13 @@ export default function WaitlistForm({ source, dark = false }: WaitlistFormProps
             dark ? 'bg-white/10 border-white/20' : 'bg-primary/10 border-primary/20'
           }`}
         >
-          <p className="text-3xl mb-3">🎉</p>
+          <p className="text-3xl mb-3">✉️</p>
           <p className={`font-semibold text-lg ${dark ? 'text-white' : 'text-primary'}`}>
-            Vous êtes inscrit(e) !
+            Vérifiez votre boîte mail
           </p>
           <p className={`text-sm mt-1.5 leading-relaxed ${dark ? 'text-white/70' : 'text-muted'}`}>
-            On vous contacte en priorité au lancement.
+            Un lien de connexion vient d&apos;être envoyé à{' '}
+            <span className="font-medium">{email}</span>
           </p>
         </motion.div>
       ) : (
@@ -105,7 +89,7 @@ export default function WaitlistForm({ source, dark = false }: WaitlistFormProps
               }`}
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? 'Inscription…' : "Obtenir mon accès anticipé"}
+              {loading ? 'Envoi en cours…' : 'Obtenir mon accès anticipé'}
             </button>
           </form>
 
