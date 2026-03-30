@@ -1,20 +1,16 @@
 'use server'
 
-import { createClient } from '@supabase/supabase-js'
-import { createClient as createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export async function signOut() {
-  const supabase = await createServerClient()
+  const supabase = await createClient()
   await supabase.auth.signOut()
   redirect('/')
 }
 
 export async function sendMagicLink(email: string, redirectTo: string) {
-  const supabase = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
-  )
+  const supabase = await createClient()
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
