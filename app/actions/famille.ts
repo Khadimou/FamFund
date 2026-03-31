@@ -143,8 +143,11 @@ export async function resendInvitation(memberId: string) {
     .eq('id', member.project_id)
     .single()
 
-  const apiKey = process.env.BREVO_API_KEY
+  const apiKey    = process.env.BREVO_API_KEY
   if (!apiKey) return { error: 'Service email non configuré.' }
+
+  const appUrl     = process.env.NEXT_PUBLIC_APP_URL ?? 'https://familyfund.fr'
+  const inviteLink = `${appUrl}/invitation/${memberId}`
 
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
@@ -154,14 +157,22 @@ export async function resendInvitation(memberId: string) {
       to: [{ email: member.email, name: `${member.first_name} ${member.last_name}` }],
       subject: `Rappel : votre contribution au projet « ${project?.name ?? ''} »`,
       htmlContent: `
-        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px">
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px">
           <p style="font-size:20px;font-weight:600;color:#1C3B2E;margin-bottom:8px">Rappel de contribution</p>
-          <p style="color:#555;line-height:1.6">
+          <p style="color:#555;line-height:1.7;margin-bottom:24px">
             Bonjour ${member.first_name},<br/><br/>
             Nous vous rappelons que vous avez été invité(e) à contribuer au projet
-            <strong>${project?.name ?? ''}</strong>. N'hésitez pas à nous faire part de votre intention.
+            <strong>${project?.name ?? ''}</strong>. Cliquez sur le bouton ci-dessous pour indiquer
+            votre intention en quelques secondes.
           </p>
-          <p style="color:#aaa;font-size:12px;margin-top:24px">Envoyé via FamilyFund.</p>
+          <a href="${inviteLink}"
+            style="display:inline-block;background:#2D6A4F;color:#fff;padding:14px 28px;
+                   border-radius:10px;text-decoration:none;font-weight:600;font-size:15px">
+            Renseigner ma contribution →
+          </a>
+          <p style="color:#aaa;font-size:12px;margin-top:28px">
+            Si vous ne souhaitez pas participer, ignorez simplement cet email.
+          </p>
         </div>`,
     }),
   })
