@@ -49,6 +49,7 @@ export default function FamilleClient({ members, projectId }: Props) {
   const [editMember,    setEditMember]    = useState<MemberData | null>(null)
   const [openMenuId,    setOpenMenuId]    = useState<string | null>(null)
   const [feedbackId,    setFeedbackId]    = useState<string | null>(null) // id après relance
+  const [emailWarning,  setEmailWarning]  = useState<string | null>(null)
   const [, startTransition] = useTransition()
 
   /* Ferme le menu si clic ailleurs */
@@ -75,7 +76,11 @@ export default function FamilleClient({ members, projectId }: Props) {
   /* Actions */
   function openAdd()              { setEditMember(null); setModalOpen(true) }
   function openEdit(m: MemberData){ setEditMember(m);    setModalOpen(true) }
-  function closeModal()           { setModalOpen(false); setEditMember(null) }
+  function closeModal(warning?: string) {
+    setModalOpen(false)
+    setEditMember(null)
+    if (warning) setEmailWarning(warning)
+  }
 
   function handleDelete(id: string) {
     if (!confirm('Supprimer ce membre ? Cette action est irréversible.')) return
@@ -101,6 +106,15 @@ export default function FamilleClient({ members, projectId }: Props) {
           Inviter un membre
         </button>
       </div>
+
+      {/* ── Warning email ── */}
+      {emailWarning && (
+        <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-sm">
+          <span className="shrink-0 mt-0.5">⚠️</span>
+          <span>{emailWarning}</span>
+          <button onClick={() => setEmailWarning(null)} className="ml-auto shrink-0 text-amber-500 hover:text-amber-700">✕</button>
+        </div>
+      )}
 
       {/* ── KPIs ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">

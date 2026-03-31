@@ -34,7 +34,7 @@ export interface MemberData {
 interface Props {
   projectId: string
   member?: MemberData | null  // null = mode ajout
-  onClose: () => void
+  onClose: (warning?: string) => void
 }
 
 const EMPTY = { firstName: '', lastName: '', relation: '', email: '', phone: '', amount: '', contributionType: '', availability: 'non_renseigne' }
@@ -81,13 +81,18 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
       : await addMember({ ...fields, projectId })
 
     if (result.error) { setError(result.error); setLoading(false); return }
+    if ('emailWarning' in result && result.emailWarning) {
+      // Membre ajouté mais email non envoyé — on ferme avec un warning
+      onClose(result.emailWarning as string)
+      return
+    }
     onClose()
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => onClose()} />
 
       {/* Panel */}
       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
@@ -96,7 +101,7 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
           <h2 className="font-semibold text-text">
             {isEdit ? 'Modifier le membre' : 'Inviter un membre'}
           </h2>
-          <button onClick={onClose} className="text-muted hover:text-text transition-colors">
+          <button onClick={() => onClose()} className="text-muted hover:text-text transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -157,7 +162,7 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
 
           {/* Actions */}
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className={btnSecondary}>Annuler</button>
+            <button type="button" onClick={() => onClose()} className={btnSecondary}>Annuler</button>
             <button type="submit" disabled={loading} className={btnPrimary}>
               {loading && <Loader2 size={15} className="animate-spin" />}
               {loading ? 'Enregistrement…' : isEdit ? 'Enregistrer' : 'Inviter'}
