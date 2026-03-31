@@ -67,6 +67,12 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    if (!fields.email.trim() && !fields.phone.trim()) {
+      setError('Un email ou un numéro de téléphone est obligatoire pour envoyer l\'invitation.')
+      return
+    }
+
     setLoading(true)
     setError('')
 
@@ -116,13 +122,16 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
 
           {/* Contact */}
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Email">
+            <Field label="Email" hint="ou téléphone">
               <input type="email" value={fields.email} onChange={set('email')} placeholder="marie@email.com" className={inp} />
             </Field>
-            <Field label="Téléphone">
+            <Field label="Téléphone" hint="ou email">
               <input type="tel" value={fields.phone} onChange={set('phone')} placeholder="+33 6 …" className={inp} />
             </Field>
           </div>
+          <p className="text-xs text-muted -mt-1">
+            Au moins l'un des deux est requis pour envoyer l'invitation.
+          </p>
 
           {/* Contribution */}
           <div className="grid grid-cols-2 gap-3">
@@ -160,11 +169,13 @@ export default function MemberModal({ projectId, member, onClose }: Props) {
   )
 }
 
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function Field({ label, required, hint, children }: { label: string; required?: boolean; hint?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
       <label className="block text-sm font-medium text-text">
-        {label}{required && <span className="text-accent ml-0.5">*</span>}
+        {label}
+        {required && <span className="text-accent ml-0.5">*</span>}
+        {hint && <span className="text-muted font-normal text-xs ml-1">({hint})</span>}
       </label>
       {children}
     </div>

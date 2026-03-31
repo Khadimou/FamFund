@@ -20,7 +20,7 @@ export async function addMember(payload: MemberPayload) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Non authentifié.' }
 
-  const { error } = await supabase.from('family_members').insert({
+  const { data: member, error } = await supabase.from('family_members').insert({
     project_id:        payload.projectId,
     first_name:        payload.firstName,
     last_name:         payload.lastName,
@@ -31,9 +31,55 @@ export async function addMember(payload: MemberPayload) {
     contribution_type: payload.contributionType || null,
     availability:      payload.availability    || 'non_renseigne',
     status:            'invite',
-  })
+  }).select('id').single()
 
   if (error) return { error: error.message }
+
+  // Envoi de l'invitation si un email est renseigné
+  if (payload.email && member) {
+    const { data: project } = await supabase
+      .from('projects')
+      .select('name')
+      .eq('id', payload.projectId)
+      .single()
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://familyfund.fr'
+    const inviteLink = `${appUrl}/invitation/${member.id}`
+    const apiKey = process.env.BREVO_API_KEY
+
+    if (apiKey) {
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sender: { name: 'FamilyFund', email: 'noreply@familyfund.fr' },
+          to: [{ email: payload.email, name: `${payload.firstName} ${payload.lastName}` }],
+          subject: `${payload.firstName}, vous êtes invité(e) à contribuer au projet « ${project?.name ?? ''} »`,
+          htmlContent: `
+            <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px">
+              <p style="font-size:22px;font-weight:600;color:#1C3B2E;margin-bottom:8px">
+                Vous avez été invité(e) à contribuer
+              </p>
+              <p style="color:#555;line-height:1.7;margin-bottom:24px">
+                Bonjour ${payload.firstName},<br/><br/>
+                Vous avez été invité(e) à participer au projet <strong>${project?.name ?? ''}</strong>
+                sur FamilyFund. En quelques clics, indiquez si vous souhaitez contribuer et à quelle hauteur.
+                Vos informations resteront entièrement confidentielles.
+              </p>
+              <a href="${inviteLink}"
+                style="display:inline-block;background:#2D6A4F;color:#fff;padding:14px 28px;
+                       border-radius:10px;text-decoration:none;font-weight:600;font-size:15px">
+                Renseigner ma contribution →
+              </a>
+              <p style="color:#aaa;font-size:12px;margin-top:28px">
+                Si vous ne souhaitez pas participer, ignorez simplement cet email.
+              </p>
+            </div>`,
+        }),
+      }).catch(() => {}) // L'email est best-effort, ne bloque pas l'ajout
+    }
+  }
+
   revalidatePath('/famille')
   return { success: true }
 }
