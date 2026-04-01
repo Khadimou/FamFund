@@ -8,7 +8,6 @@ import {
   Users,
   Briefcase,
   FileText,
-  TrendingUp,
   CreditCard,
   FileCheck,
   ChevronLeft,
@@ -21,7 +20,6 @@ const NAV_ITEMS = [
   { href: '/famille',          label: 'Famille',            icon: Users           },
   { href: '/projet',           label: 'Mon Projet',         icon: Briefcase       },
   { href: '/documents',        label: 'Documents',          icon: FileText        },
-  { href: '/profil-financier', label: 'Profil Financier',   icon: TrendingUp      },
   { href: '/remboursements',   label: 'Remboursements',     icon: CreditCard      },
   { href: '/lettre-synthese',  label: 'Lettre synthèse',    icon: FileCheck       },
 ]
