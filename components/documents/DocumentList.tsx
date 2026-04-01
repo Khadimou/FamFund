@@ -47,6 +47,8 @@ interface Member {
   last_name: string | null
   contribution_type: string | null
   status: string
+  amount: number | null
+  max_amount: number | null
 }
 
 interface Props {
@@ -66,27 +68,35 @@ function sigLabel(doc: Doc) {
 
 /* ══════════════════════════════════════════════════════════════════════ */
 export default function DocumentList({ documents, members, projectId }: Props) {
-  const [modalOpen, setModalOpen]   = useState(false)
-  const [memberId,  setMemberId]    = useState('')
-  const [docType,   setDocType]     = useState<DocumentType>('loan_agreement')
-  const [error,     setError]       = useState('')
+  const [modalOpen,    setModalOpen]    = useState(false)
+  const [memberId,     setMemberId]     = useState('')
+  const [docType,      setDocType]      = useState<DocumentType>('loan_agreement')
+  const [amountInput,  setAmountInput]  = useState('')
+  const [error,        setError]        = useState('')
   const [isPending, startTransition] = useTransition()
 
-  const selectedMember = members.find(m => m.id === memberId)
-  // Auto-derive doc type from member contribution_type
+  // Auto-derive doc type + pre-fill amount from member data
   function handleMemberChange(id: string) {
     setMemberId(id)
     const m = members.find(m => m.id === id)
     if (m?.contribution_type && CONTRIB_TO_DOC[m.contribution_type]) {
       setDocType(CONTRIB_TO_DOC[m.contribution_type])
     }
+    // Pre-fill: use confirmed amount, fallback to max_amount
+    const preAmount = m?.amount ?? m?.max_amount ?? null
+    setAmountInput(preAmount != null ? String(preAmount) : '')
   }
 
   function handleGenerate() {
     if (!memberId) { setError('Sélectionnez un membre.'); return }
+    const parsedAmount = parseFloat(amountInput)
+    if (!amountInput || isNaN(parsedAmount) || parsedAmount <= 0) {
+      setError('Veuillez indiquer le montant du contrat.')
+      return
+    }
     setError('')
     startTransition(async () => {
-      await generateDocument(projectId, memberId, docType)
+      await generateDocument(projectId, memberId, docType, parsedAmount)
     })
   }
 
@@ -202,6 +212,27 @@ export default function DocumentList({ documents, members, projectId }: Props) {
                     ))}
                   </select>
                 )}
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-sm font-medium text-text">
+                  Montant du contrat <span className="text-accent">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    min={1}
+                    step={100}
+                    value={amountInput}
+                    onChange={e => setAmountInput(e.target.value)}
+                    placeholder="Ex : 15 000"
+                    className={inp}
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">€</span>
+                </div>
+                <p className="text-xs text-muted">
+                  Ce montant apparaîtra dans le contrat signé via Yousign — il doit être confirmé par les deux parties.
+                </p>
               </div>
 
               <div className="space-y-1.5">

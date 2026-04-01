@@ -31,7 +31,7 @@ export default async function DocumentsPage() {
       .order('created_at', { ascending: false }),
     supabase
       .from('family_members')
-      .select('id, first_name, last_name, contribution_type, status')
+      .select('id, first_name, last_name, contribution_type, status, amount, max_amount')
       .eq('project_id', project.id)
       .order('first_name'),
   ])
