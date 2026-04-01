@@ -281,7 +281,10 @@ export default function RemboursementsClient({ project, repayments }: Props) {
               <div className="flex items-center gap-2.5">
                 <Bell size={16} className="text-muted" />
                 <div>
-                  <p className="text-sm font-semibold text-text">Rappels automatiques</p>
+                  <p className="text-sm font-semibold text-text flex items-center gap-2">
+                    Rappels automatiques
+                    <span className="text-[10px] font-semibold bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">En Famille</span>
+                  </p>
                   <p className="text-xs text-muted">Envoyés 5 j avant l'échéance</p>
                 </div>
               </div>
@@ -311,6 +314,20 @@ export default function RemboursementsClient({ project, repayments }: Props) {
             <Download size={15} className="text-muted" />
             Exporter l'échéancier (PDF)
           </button>
+
+          {/* Upsell En Famille */}
+          <div className="bg-[#FAF7F2] border border-[#e8e2d9] rounded-2xl p-4 text-center">
+            <p className="text-xs font-semibold text-[#2D6A4F] mb-0.5">Plan En Famille</p>
+            <p className="text-xs text-muted mb-3 leading-relaxed">
+              Rappels, alertes réglementaires et export PDF inclus à 19 €/mois.
+            </p>
+            <a
+              href="/tarifs"
+              className="inline-block px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition-colors"
+            >
+              Voir le plan →
+            </a>
+          </div>
 
         </div>
       </div>

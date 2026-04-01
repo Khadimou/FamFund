@@ -107,6 +107,22 @@ export default function FamilleClient({ members, projectId }: Props) {
         </button>
       </div>
 
+      {/* ── Upsell plan gratuit (limite 3 contributeurs) ── */}
+      {total >= 3 && (
+        <div className="mb-6 flex items-center justify-between gap-4 bg-[#FAF7F2] border border-[#e8e2d9] rounded-xl px-4 py-3">
+          <p className="text-sm text-[#6b6b65]">
+            <span className="font-semibold text-[#1a1a18]">Plan Gratuit — 3 contributeurs atteints.</span>{' '}
+            Passez au plan <span className="font-semibold text-[#2D6A4F]">En Famille</span> pour en inviter autant que vous voulez.
+          </p>
+          <a
+            href="/tarifs"
+            className="shrink-0 px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold hover:bg-primary-dark transition-colors whitespace-nowrap"
+          >
+            Voir le plan →
+          </a>
+        </div>
+      )}
+
       {/* ── Warning email ── */}
       {emailWarning && (
         <div className="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-sm">

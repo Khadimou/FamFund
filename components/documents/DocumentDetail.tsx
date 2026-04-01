@@ -139,12 +139,12 @@ export default function DocumentDetail({ doc, project, ownerProfile }: Props) {
               <div className="flex-1 text-sm">
                 <p className="font-semibold text-amber-800 mb-0.5">Votre levée dépasse {fmt(LEGAL_THRESHOLD)} €</p>
                 <p className="text-amber-700 leading-relaxed">
-                  Pour les montants importants, une relecture par un avocat partenaire spécialisé en droit des prêts
+                  Pour les montants importants, une validation par un avocat partenaire spécialisé en droit des prêts
                   familiaux peut sécuriser votre démarche.
                 </p>
-                <button className="mt-2 text-amber-800 font-semibold underline underline-offset-2 text-sm hover:text-amber-900 transition-colors">
-                  Être mis en relation — gratuit
-                </button>
+                <Link href="/tarifs" className="mt-2 inline-block text-amber-800 font-semibold underline underline-offset-2 text-sm hover:text-amber-900 transition-colors">
+                  Plan Avec un avocat — 249 € →
+                </Link>
               </div>
               <button onClick={() => setLegalDismissed(true)} className="text-amber-400 hover:text-amber-600 shrink-0">
                 <X size={16} />
@@ -356,17 +356,21 @@ export default function DocumentDetail({ doc, project, ownerProfile }: Props) {
             <p className="text-white/60 text-sm mb-1">
               Signature électronique sécurisée via Yousign (eIDAS)
             </p>
-            <p className="text-accent font-bold text-lg mb-4">14 € HT</p>
-            <button
-              disabled
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent-dark transition-colors disabled:opacity-70"
+            <div className="flex items-baseline gap-1.5 mb-1">
+              <span className="text-white font-bold text-lg">19 €</span>
+              <span className="text-white/50 text-sm">/ mois</span>
+            </div>
+            <p className="text-white/40 text-xs mb-4">Plan En Famille · contrats illimités inclus</p>
+            <Link
+              href="/tarifs"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent-dark transition-colors"
             >
               <PenLine size={15} />
-              Signer le document — 14 €
-            </button>
+              Activer En Famille — 19 €/mois
+            </Link>
             <p className="text-center mt-2">
               <Link href="/tarifs" className="text-xs text-white/40 hover:text-white/60 transition-colors">
-                Pourquoi payer ?
+                Voir tous les plans →
               </Link>
             </p>
           </div>
@@ -379,8 +383,8 @@ export default function DocumentDetail({ doc, project, ownerProfile }: Props) {
             </div>
             <p className="text-xs text-muted leading-relaxed">
               Nos contrats sont conformes au droit français et répondent aux exigences de l&apos;article 1905
-              du Code civil. Une validation par avocat est disponible via notre{' '}
-              <Link href="/tarifs" className="text-primary font-medium hover:underline">Plan Juridique</Link>.
+              du Code civil. Une validation par avocat est disponible via le plan{' '}
+              <Link href="/tarifs" className="text-primary font-medium hover:underline">Avec un avocat — 249 €</Link>.
             </p>
             <div className="flex items-center gap-1.5 mt-3 text-xs text-muted">
               <Lock size={12} />

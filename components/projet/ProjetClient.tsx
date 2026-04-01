@@ -285,9 +285,12 @@ export default function ProjetClient({ project, membersCount }: Props) {
               <div className="mt-4 flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-sm">
                 <AlertTriangle size={16} className="shrink-0 mt-0.5 text-amber-500" />
                 <span>
-                  <span className="font-semibold">Plan Juridique recommandé</span> — Votre collecte dépasse{' '}
+                  <span className="font-semibold">Plan « Avec un avocat » recommandé</span> — Votre collecte dépasse{' '}
                   {fmt(LEGAL_THRESHOLD)} €. La validation par un avocat partenaire est recommandée pour sécuriser
-                  votre dossier.
+                  votre dossier.{' '}
+                  <a href="/tarifs" className="underline underline-offset-2 font-semibold hover:text-amber-900">
+                    Voir le plan — 249 € →
+                  </a>
                 </span>
               </div>
             )}
