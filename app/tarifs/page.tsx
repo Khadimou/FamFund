@@ -77,7 +77,7 @@ export default function TarifsPage() {
 
           {/* Plan 1 — Gratuit */}
           <PlanCard>
-            <p style={labelStyle}>Pour démarrer</p>
+            <p style={labelStyle()}>Pour démarrer</p>
             <h2 style={nameStyle()}>Premiers pas</h2>
             <p style={taglineStyle()}>Posez les bases avant de vous lancer dans la conversation.</p>
 
