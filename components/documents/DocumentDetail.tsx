@@ -65,6 +65,8 @@ function calcMensualite(amount: number, months: number, rate: number): number {
 }
 
 /* ── Types ── */
+interface FamilyMemberRow { id: string; first_name: string | null; last_name: string | null; email: string | null }
+
 interface DocRow {
   id: string
   type: string
@@ -76,7 +78,8 @@ interface DocRow {
   borrower_signed_at: string | null
   created_at: string
   project_id: string
-  family_members: { id: string; first_name: string | null; last_name: string | null; email: string | null } | null
+  // Supabase returns FK joins as arrays
+  family_members: FamilyMemberRow[] | FamilyMemberRow | null
 }
 
 interface Props {
@@ -89,7 +92,7 @@ interface Props {
 export default function DocumentDetail({ doc, project, ownerProfile }: Props) {
   const [legalDismissed, setLegalDismissed] = useState(false)
 
-  const member   = doc.family_members
+  const member   = Array.isArray(doc.family_members) ? doc.family_members[0] ?? null : doc.family_members
   const amount   = doc.amount          ?? 0
   const months   = doc.duration_months ?? 0
   const rate     = doc.interest_rate   ?? 0

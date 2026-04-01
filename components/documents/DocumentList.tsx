@@ -37,7 +37,8 @@ interface Doc {
   lender_signed_at: string | null
   borrower_signed_at: string | null
   created_at: string
-  family_members: { first_name: string | null; last_name: string | null } | null
+  // Supabase returns FK joins as arrays
+  family_members: { first_name: string | null; last_name: string | null }[] | { first_name: string | null; last_name: string | null } | null
 }
 
 interface Member {
@@ -125,9 +126,9 @@ export default function DocumentList({ documents, members, projectId }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {documents.map(doc => {
-            const sig   = sigLabel(doc)
-            const label = DOC_TYPE_LABELS[doc.type] ?? doc.type
-            const member = doc.family_members
+            const sig    = sigLabel(doc)
+            const label  = DOC_TYPE_LABELS[doc.type] ?? doc.type
+            const member = Array.isArray(doc.family_members) ? doc.family_members[0] ?? null : doc.family_members
             return (
               <Link
                 key={doc.id}
