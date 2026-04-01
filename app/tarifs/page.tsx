@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import BackButton from '@/components/tarifs/BackButton'
 
 /* ── SVG helpers ── */
 function CheckIcon({ white }: { white?: boolean }) {
@@ -52,9 +53,7 @@ export default function TarifsPage() {
         <Link href="/" style={{ fontFamily: 'var(--font-playfair), Lora, serif', fontSize: '1.25rem', color: '#2D6A4F', letterSpacing: '-0.02em', textDecoration: 'none' }}>
           FamilyFund
         </Link>
-        <Link href="/auth/login" style={{ fontSize: '0.875rem', color: '#6b6b65', textDecoration: 'none' }}>
-          Se connecter
-        </Link>
+        <BackButton />
       </nav>
 
       {/* ── Hero ── */}
