@@ -452,6 +452,23 @@ function SignCard({ doc, isSigned }: { doc: DocRow; isSigned: boolean }) {
 
   const isPending = !!doc.yousign_request_id && !isSigned
 
+  async function handleCheck() {
+    setLoading(true)
+    setError(null)
+    const res = await fetch('/api/yousign/status', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ documentId: doc.id }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      setError(data.error ?? 'Une erreur est survenue.')
+      setLoading(false)
+      return
+    }
+    router.refresh()
+  }
+
   async function handleSign() {
     setLoading(true)
     setError(null)
@@ -486,9 +503,14 @@ function SignCard({ doc, isSigned }: { doc: DocRow; isSigned: boolean }) {
         <p className="text-sm text-amber-700 mb-3">
           Les emails ont été envoyés aux deux parties. En attente de signatures.
         </p>
-        <p className="text-xs text-amber-600">
-          La page se mettra à jour automatiquement une fois les deux signatures reçues.
-        </p>
+        <button
+          onClick={handleCheck}
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-100 text-amber-800 font-medium text-sm hover:bg-amber-200 transition-colors disabled:opacity-60"
+        >
+          {loading ? <><Loader2 size={14} className="animate-spin" /> Vérification…</> : 'Vérifier le statut'}
+        </button>
+        {error && <p className="text-red-600 text-xs mt-2">{error}</p>}
       </div>
     )
   }
