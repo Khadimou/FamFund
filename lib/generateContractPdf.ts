@@ -1,4 +1,10 @@
-import { PDFDocument, StandardFonts, rgb, PDFFont, PDFPage } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb, PDFFont } from 'pdf-lib'
+
+// toLocaleString('fr-FR') uses narrow no-break space (\u202F) as thousands separator
+// which WinAnsi cannot encode — use a plain space instead
+function fmtNum(n: number): string {
+  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+}
 
 export interface ContractData {
   typeLabel:      string
@@ -94,7 +100,7 @@ export async function generateContractPdf(d: ContractData): Promise<Buffer> {
   /* ── Article 1 ── */
   drawLine('Article 1 - Objet du pret', margin, bold, 11, [0.11, 0.23, 0.18])
   y -= 4
-  const amtTxt = d.amount > 0 ? `${d.amount.toLocaleString('fr-FR')} euros` : '[MONTANT A PRECISER]'
+  const amtTxt = d.amount > 0 ? `${fmtNum(d.amount)} euros` : '[MONTANT A PRECISER]'
   drawWrapped(
     `Le Preteur, ${d.memberName}, consent a preter a l'Emprunteur, ${d.ownerName}, la somme de ${amtTxt} destinee au financement du projet "${d.projectName}".`,
     margin, regular, 10, usableW,
@@ -106,7 +112,7 @@ export async function generateContractPdf(d: ContractData): Promise<Buffer> {
   y -= 4
   if (d.durationMonths > 0) {
     let a2 = `Le pret est consenti pour une duree de ${d.durationMonths} mois.`
-    if (d.mensualite != null) a2 += ` L'Emprunteur s'engage a rembourser une mensualite de ${Math.round(d.mensualite).toLocaleString('fr-FR')} euros.`
+    if (d.mensualite != null) a2 += ` L'Emprunteur s'engage a rembourser une mensualite de ${fmtNum(d.mensualite)} euros.`
     drawWrapped(a2, margin, regular, 10, usableW)
   } else {
     drawWrapped("La duree de remboursement sera definie d'un commun accord entre les parties.", margin, regular, 10, usableW)
