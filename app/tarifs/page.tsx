@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import BackButton from '@/components/tarifs/BackButton'
+import { GratuitButton, EnFamilleButton, AvecAvocatButton } from '@/components/tarifs/PlanCTAs'
 
 /* ── SVG helpers ── */
 function CheckIcon({ white }: { white?: boolean }) {
@@ -88,9 +89,7 @@ export default function TarifsPage() {
               <p style={priceNoteStyle()}>Gratuit, sans engagement</p>
             </div>
 
-            <a href="/auth/login" style={{ ...btnBase, border: '1.5px solid #e8e2d9', background: 'transparent', color: '#1a1a18' }}>
-              Commencer gratuitement
-            </a>
+            <div style={{ marginBottom: 28 }}><GratuitButton /></div>
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <Feat>1 projet actif</Feat>
@@ -124,9 +123,7 @@ export default function TarifsPage() {
               <p style={priceNoteStyle(true)}>par mois · résiliable à tout moment</p>
             </div>
 
-            <a href="/auth/login" style={{ ...btnBase, background: '#fff', color: '#2D6A4F', boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}>
-              Protéger mon projet
-            </a>
+            <div style={{ marginBottom: 28 }}><EnFamilleButton /></div>
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <Feat dark>Contributeurs illimités</Feat>
@@ -156,9 +153,7 @@ export default function TarifsPage() {
               <p style={priceNoteStyle()}>paiement unique · par projet</p>
             </div>
 
-            <a href="/auth/login" style={{ ...btnBase, background: '#F4A261', color: '#fff', boxShadow: '0 4px 16px rgba(244,162,97,0.35)' }}>
-              Sécuriser avec un avocat
-            </a>
+            <div style={{ marginBottom: 28 }}><AvecAvocatButton /></div>
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
               <Feat>Tout le plan En Famille inclus</Feat>
