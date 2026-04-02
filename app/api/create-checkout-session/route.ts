@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
+import type Stripe from 'stripe'
 
 export type CheckoutPlan = 'en_famille' | 'avec_avocat'
 
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://familyfund.fr'
 
-  const sessionParams: Parameters<typeof stripe.checkout.sessions.create>[0] = {
+  const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode:                 MODES[plan],
     locale:               'fr',
     payment_method_types: ['card'],
@@ -59,9 +60,9 @@ export async function POST(req: NextRequest) {
     },
   }
 
-  // Pour les abonnements, autoriser la mise à jour de la méthode de paiement
+  // Pour les abonnements, stocker le projectId dans subscription_data
   if (MODES[plan] === 'subscription') {
-    (sessionParams as any).subscription_data = {
+    sessionParams.subscription_data = {
       metadata: { projectId: project.id, userId: user.id },
     }
   }
