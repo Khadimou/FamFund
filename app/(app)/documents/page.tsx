@@ -19,7 +19,7 @@ export default async function DocumentsPage() {
 
   if (!project) redirect('/onboarding')
 
-  const [{ data: rawDocs }, { data: members }] = await Promise.all([
+  const [{ data: rawDocs }, { data: members }, { data: projectDetail }] = await Promise.all([
     supabase
       .from('documents')
       .select(`
@@ -34,6 +34,11 @@ export default async function DocumentsPage() {
       .select('id, first_name, last_name, contribution_type, status, amount, max_amount')
       .eq('project_id', project.id)
       .order('first_name'),
+    supabase
+      .from('projects')
+      .select('duration_months, interest_rate')
+      .eq('id', project.id)
+      .single(),
   ])
 
   return (
@@ -42,6 +47,8 @@ export default async function DocumentsPage() {
         documents={rawDocs ?? []}
         members={members ?? []}
         projectId={project.id}
+        defaultDurationMonths={projectDetail?.duration_months ?? null}
+        defaultInterestRate={projectDetail?.interest_rate ?? 0}
       />
     </div>
   )

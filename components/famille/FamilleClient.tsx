@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition, useRef, useEffect } from 'react'
-import { UserPlus, Mail, Phone, MoreHorizontal, Send, Pencil, Trash2 } from 'lucide-react'
+import { UserPlus, Mail, Phone, MoreHorizontal, Send, Pencil, Trash2, Link2 } from 'lucide-react'
 import { deleteMember, resendInvitation } from '@/app/actions/famille'
 import MemberModal, { type MemberData } from './MemberModal'
 
@@ -49,6 +49,7 @@ export default function FamilleClient({ members, projectId }: Props) {
   const [editMember,    setEditMember]    = useState<MemberData | null>(null)
   const [openMenuId,    setOpenMenuId]    = useState<string | null>(null)
   const [feedbackId,    setFeedbackId]    = useState<string | null>(null) // id après relance
+  const [copiedId,      setCopiedId]      = useState<string | null>(null) // id après copie lien
   const [emailWarning,  setEmailWarning]  = useState<string | null>(null)
   const [, startTransition] = useTransition()
 
@@ -90,6 +91,13 @@ export default function FamilleClient({ members, projectId }: Props) {
   async function handleResend(id: string) {
     const result = await resendInvitation(id)
     if (!result.error) { setFeedbackId(id); setTimeout(() => setFeedbackId(null), 3000) }
+  }
+
+  function handleCopyLink(id: string) {
+    const url = `${window.location.origin}/invitation/${id}`
+    navigator.clipboard.writeText(url)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2500)
   }
 
   /* ── Rendu ── */
@@ -265,6 +273,21 @@ export default function FamilleClient({ members, projectId }: Props) {
                     {/* Actions */}
                     <td className="px-4 py-4">
                       <div className="relative flex items-center justify-end gap-1">
+                        {/* Copier le lien d'invitation */}
+                        {m.status === 'invite' && (
+                          <button
+                            onClick={() => handleCopyLink(m.id)}
+                            title={copiedId === m.id ? 'Lien copié !' : 'Copier le lien d\'invitation'}
+                            className={`p-1.5 rounded-lg transition-colors ${
+                              copiedId === m.id
+                                ? 'text-primary bg-primary/10'
+                                : 'text-muted hover:text-primary hover:bg-primary/5'
+                            }`}
+                          >
+                            <Link2 size={14} />
+                          </button>
+                        )}
+
                         {/* Relancer (invités avec email) */}
                         {m.status === 'invite' && m.email && (
                           <button

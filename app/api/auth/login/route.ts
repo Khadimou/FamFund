@@ -1,31 +1,21 @@
 import { NextResponse } from 'next/server'
-
-const API = process.env.FASTAPI_URL ?? 'http://localhost:8000'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    const { email, password } = await request.json()
+    const supabase = await createClient()
 
-    const upstream = await fetch(`${API}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    })
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
 
-    const data = await upstream.json()
-    if (!upstream.ok) {
-      return NextResponse.json({ error: data.detail ?? 'Identifiants incorrects.' }, { status: upstream.status })
+    if (error) {
+      return NextResponse.json(
+        { error: 'Email ou mot de passe incorrect.' },
+        { status: 401 },
+      )
     }
 
-    const response = NextResponse.json({ success: true })
-    response.cookies.set('auth_token', data.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 jours
-      path: '/',
-    })
-    return response
+    return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Service indisponible.' }, { status: 503 })
   }

@@ -79,7 +79,7 @@ class UserOut(BaseModel):
 class GroupCreate(BaseModel):
     name:        str = Field(..., min_length=2, max_length=255)
     description: Optional[str] = None
-    goal_amount: Decimal = Field(..., gt=0, decimal_places=2,
+    goal_amount: Decimal = Field(..., gt=0,
                                  description="Montant cible en euros")
     currency:    str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
     deadline:    Optional[date] = None
@@ -88,7 +88,7 @@ class GroupCreate(BaseModel):
 class GroupUpdate(BaseModel):
     name:        Optional[str] = Field(None, min_length=2, max_length=255)
     description: Optional[str] = None
-    goal_amount: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
+    goal_amount: Optional[Decimal] = Field(None, gt=0)
     deadline:    Optional[date] = None
     status:      Optional[GroupStatus] = None
 
@@ -154,11 +154,11 @@ class MemberOut(BaseModel):
 # ── PLEDGES ───────────────────────────────────────────────────────────────────
 
 class PledgeCreate(BaseModel):
-    amount:          Decimal = Field(..., gt=0, decimal_places=2)
+    amount:          Decimal = Field(..., gt=0)
     type:            PledgeType = PledgeType.loan
     notes:           Optional[str] = Field(None, description="Note privée du membre")
     interest_rate:   Optional[Decimal] = Field(
-        None, ge=0, decimal_places=2,
+        None, ge=0,
         description="Taux annuel en % (prêt uniquement)"
     )
     duration_months: Optional[int] = Field(
@@ -168,11 +168,11 @@ class PledgeCreate(BaseModel):
 
 
 class PledgeUpdate(BaseModel):
-    amount:          Optional[Decimal] = Field(None, gt=0, decimal_places=2)
+    amount:          Optional[Decimal] = Field(None, gt=0)
     type:            Optional[PledgeType] = None
     status:          Optional[PledgeStatus] = None
     notes:           Optional[str] = None
-    interest_rate:   Optional[Decimal] = Field(None, ge=0, decimal_places=2)
+    interest_rate:   Optional[Decimal] = Field(None, ge=0)
     duration_months: Optional[int] = Field(None, gt=0, le=360)
 
 
@@ -236,8 +236,8 @@ class InvitationAccept(BaseModel):
     """Corps de la requête quand un membre accepte son invitation."""
     name:            str     = Field(..., min_length=2, max_length=255)
     password:        str     = Field(..., min_length=8)
-    amount:          Decimal = Field(..., gt=0, decimal_places=2)
+    amount:          Decimal = Field(..., gt=0)
     type:            PledgeType = PledgeType.loan
-    interest_rate:   Optional[Decimal] = Field(None, ge=0, decimal_places=2)
+    interest_rate:   Optional[Decimal] = Field(None, ge=0)
     duration_months: Optional[int]     = Field(None, gt=0, le=360)
     notes:           Optional[str]     = None

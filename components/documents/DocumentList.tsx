@@ -52,9 +52,11 @@ interface Member {
 }
 
 interface Props {
-  documents:  Doc[]
-  members:    Member[]
-  projectId:  string
+  documents:             Doc[]
+  members:               Member[]
+  projectId:             string
+  defaultDurationMonths: number | null
+  defaultInterestRate:   number
 }
 
 /* ── Signature label ── */
@@ -67,13 +69,17 @@ function sigLabel(doc: Doc) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════ */
-export default function DocumentList({ documents, members, projectId }: Props) {
-  const [modalOpen,    setModalOpen]    = useState(false)
-  const [memberId,     setMemberId]     = useState('')
-  const [docType,      setDocType]      = useState<DocumentType>('loan_agreement')
-  const [amountInput,  setAmountInput]  = useState('')
-  const [error,        setError]        = useState('')
+export default function DocumentList({ documents, members, projectId, defaultDurationMonths, defaultInterestRate }: Props) {
+  const [modalOpen,     setModalOpen]     = useState(false)
+  const [memberId,      setMemberId]      = useState('')
+  const [docType,       setDocType]       = useState<DocumentType>('loan_agreement')
+  const [amountInput,   setAmountInput]   = useState('')
+  const [durationInput, setDurationInput] = useState(defaultDurationMonths ? String(defaultDurationMonths) : '')
+  const [rateInput,     setRateInput]     = useState(defaultInterestRate ? String(defaultInterestRate) : '0')
+  const [error,         setError]         = useState('')
   const [isPending, startTransition] = useTransition()
+
+  const isLoan = docType === 'loan_agreement'
 
   // Auto-derive doc type + pre-fill amount from member data
   function handleMemberChange(id: string) {
@@ -94,9 +100,18 @@ export default function DocumentList({ documents, members, projectId }: Props) {
       setError('Veuillez indiquer le montant du contrat.')
       return
     }
+    if (isLoan) {
+      const parsedDuration = parseInt(durationInput)
+      if (!durationInput || isNaN(parsedDuration) || parsedDuration <= 0) {
+        setError('Veuillez indiquer la durée de remboursement.')
+        return
+      }
+    }
     setError('')
+    const parsedDuration = isLoan ? (parseInt(durationInput) || null) : null
+    const parsedRate     = isLoan ? (parseFloat(rateInput)   || 0)    : 0
     startTransition(async () => {
-      await generateDocument(projectId, memberId, docType, parsedAmount)
+      await generateDocument(projectId, memberId, docType, parsedAmount, parsedDuration, parsedRate)
     })
   }
 
@@ -234,6 +249,46 @@ export default function DocumentList({ documents, members, projectId }: Props) {
                   Ce montant apparaîtra dans le contrat signé via Yousign — il doit être confirmé par les deux parties.
                 </p>
               </div>
+
+              {/* Durée + Taux (prêt uniquement) */}
+              {isLoan && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-medium text-text">
+                      Durée <span className="text-accent">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={1}
+                        max={360}
+                        step={1}
+                        value={durationInput}
+                        onChange={e => setDurationInput(e.target.value)}
+                        placeholder="Ex : 36"
+                        className={inp}
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">mois</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-medium text-text">Taux annuel</label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={0}
+                        max={20}
+                        step={0.1}
+                        value={rateInput}
+                        onChange={e => setRateInput(e.target.value)}
+                        placeholder="0"
+                        className={inp}
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-sm">%</span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-1.5">
                 <label className="block text-sm font-medium text-text">Type de document</label>
