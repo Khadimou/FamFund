@@ -13,15 +13,15 @@ function monthlyInstallment(amount: number, durationMonths: number, annualRatePc
   return (amount * r * Math.pow(1 + r, durationMonths)) / (Math.pow(1 + r, durationMonths) - 1)
 }
 
-/** Génère les dates d'échéances mensuelles à partir du mois prochain. */
+/** Génère les dates d'échéances mensuelles à partir du mois prochain (format YYYY-MM-DD, sans décalage timezone). */
 function buildScheduleDates(durationMonths: number): string[] {
-  const dates: string[] = []
   const now = new Date()
-  for (let i = 1; i <= durationMonths; i++) {
-    const d = new Date(now.getFullYear(), now.getMonth() + i, 1)
-    dates.push(d.toISOString().slice(0, 10))
-  }
-  return dates
+  const year  = now.getUTCFullYear()
+  const month = now.getUTCMonth() // 0-indexed
+  return Array.from({ length: durationMonths }, (_, i) => {
+    const d = new Date(Date.UTC(year, month + i + 1, 1))
+    return d.toISOString().slice(0, 10)
+  })
 }
 
 export async function generateDocument(
